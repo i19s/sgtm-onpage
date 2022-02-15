@@ -1,0 +1,7 @@
+homepage: "hhttps://www.ingenioustechnologies.com/"
+documentation: "https://ingenioustechnologies.atlassian.net/wiki/spaces/KB/pages/3137798145/GTM"
+versions:
+  # Latest version
+  - sha: 766406453b551aec6e6a5722f614b331e1810491
+    changeNotes:
+      Initial Commit

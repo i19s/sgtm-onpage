@@ -3,5 +3,6 @@ documentation: "https://ingenioustechnologies.atlassian.net/wiki/spaces/KB/pages
 versions:
   # Latest version
   - sha: 766406453b551aec6e6a5722f614b331e1810491
-    changeNotes:
-      Initial Commit
+    changeNotes: Initial Commit
+  - sha: 91e31d2ffcab502d8c6633807ec0eb2cfb635d43
+    changeNotes: Wrong variables used

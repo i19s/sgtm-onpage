@@ -14,7 +14,6 @@ ___INFO___
   "version": 1,
   "securityGroups": [],
   "displayName": "Ingenious Technologies Onpage Tracking Tag",
-  "categories": ["ATTRIBUTION"],
   "brand": {
     "id": "brand_dummy",
     "displayName": "",
@@ -178,11 +177,11 @@ function setCookies(headers) {
       'Max-Age': 31536000,
       'Path': '/'
     };
-  
+
   //set _iclid cookie;
   setCookie('_iclid', click_ids, options);
-  
-  //Here the cookies are set, which are in the tracking response in the header 'set-cookie'.  
+
+  //Here the cookies are set, which are in the tracking response in the header 'set-cookie'.
   let cookieArr = headers['set-cookie'];
   for (let cookie of cookieArr) {
     let cookieElems = cookie.split('; ');
@@ -226,37 +225,37 @@ function getValue(value_name) {
 
 //not configurable
 let protocol = 'https';
-let ing_click_cookie =     encodeUriComponent(getValue('ingClickCookie'));   //tsc
-let ing_view_cookie =      encodeUriComponent(getValue('ingViewCookie'));    //tsv
-let click_ids =            encodeUriComponent(getValue('clickIds'));          //cli
+let ing_click_cookie =     encodeUriComponent(getValue('ing_click_cookie'));   //tsc
+let ing_view_cookie =      encodeUriComponent(getValue('ing_view_cookie'));    //tsv
+let click_ids =            encodeUriComponent(getValue('click_ids'));          //cli
 let param_ref;             //is not used
 let screen_info;           //Not readable because of gtm
-let cookies_enabled =      encodeUriComponent(getValue('cookiesEnabled'));    //nck
-let javascript_enabled =   encodeUriComponent(getValue('javascriptEnabled')); //njv
+let cookies_enabled =      encodeUriComponent(getValue('cookies_enabled'));    //nck
+let javascript_enabled =   encodeUriComponent(getValue('javascript_enabled')); //njv
 let version = '4.31_gtm';
 
-//tag config 
+//tag config
 let tracking_domain =      'proxy.ingenious.cloud';
-let advertiser_id =        getValue('advertiserId');
-let redirect_mode =        encodeUriComponent(getValue('redirectMode'));      //rmd
+let advertiser_id =        getValue('advertiser_id');
+let redirect_mode =        encodeUriComponent(getValue('redirect_mode'));      //rmd
 
 //customer_data_settings
-let customer_id =          encodeUriComponent(getValue('customerId'));        //csi
-let user_value_1 =         encodeUriComponent(getValue('userValue1'));       //uv1
-let user_value_2 =         encodeUriComponent(getValue('userValue2'));       //uv2
+let customer_id =          encodeUriComponent(getValue('customer_id'));        //csi
+let user_value_1 =         encodeUriComponent(getValue('user_value_1'));       //uv1
+let user_value_2 =         encodeUriComponent(getValue('user_value_2'));       //uv2
 
 //attribution_settings
-let site_id =              encodeUriComponent(getValue('siteId'));            //sid
-let product_id =           encodeUriComponent(getValue('productId'));         //pid
+let site_id =              encodeUriComponent(getValue('site_id'));            //sid
+let product_id =           encodeUriComponent(getValue('product_id'));         //pid
 let timestamp =            encodeUriComponent(getValue('timestamp'));          //tst
-let session_id =           encodeUriComponent(getValue('sessionId'));         //session
-let http_referrer =        encodeUriComponent(getValue('httpReferrer'));      //rrf
-let http_location =        encodeUriComponent(getValue('httpLocation'));      //href
+let session_id =           encodeUriComponent(getValue('session_id'));         //session
+let http_referrer =        encodeUriComponent(getValue('http_referrer'));      //rrf
+let http_location =        encodeUriComponent(getValue('http_location'));      //href
 let gdpr =                 encodeUriComponent(getValue('gdpr'));               //gdpr
-let gdpr_consent =         encodeUriComponent(getValue('gdprConsent'));       //gdpr_consent
+let gdpr_consent =         encodeUriComponent(getValue('gdpr_consent'));       //gdpr_consent
 
-let url = 
-    protocol + 
+let url =
+    protocol +
     '://' +
     tracking_domain +
     '/ts/' +
@@ -269,7 +268,7 @@ let url =
     (click_ids != '' ? '&cli=' + click_ids : '') +
     (cookies_enabled != '' ? '&nck=' + cookies_enabled : '') +
     (version != '' ? '&ver=' + version : '') +
-    //tag config 
+    //tag config
     (redirect_mode != '' ? '&rmd=' + redirect_mode : '') +
     //customer_data_settings
     (customer_id != '' ? '&csi=' + customer_id : '') +
@@ -277,11 +276,11 @@ let url =
     (user_value_2 != '' ? '&uv2=' + user_value_2 : '') +
     //attribution_settings
     (site_id != '' ? '&sid=' + site_id : '') +
-    (product_id != '' ? '&pid=' + product_id : '') +   
-    (timestamp != '' ? '&tst=' + timestamp : '') +  
+    (product_id != '' ? '&pid=' + product_id : '') +
+    (timestamp != '' ? '&tst=' + timestamp : '') +
     (session_id != '' ? '&session=' + session_id : '') +
-    (http_location != '' ? '&href=' + http_location : '') +      
-    (http_referrer != '' ? '&rrf=' + http_referrer : '') +  
+    (http_location != '' ? '&href=' + http_location : '') +
+    (http_referrer != '' ? '&rrf=' + http_referrer : '') +
     (gdpr != '' ? '&gdpr=' + gdpr : '') +
     (gdpr_consent != '' ? '&gdpr_consent=' + gdpr_consent : '');
 
@@ -290,17 +289,19 @@ if(isEmpty(protocol) || isEmpty(tracking_domain) ||isEmpty(advertiser_id)) {
   data.gtmOnFailure();
 }
 
-let cookies = (ing_click_cookie != '' ? 'tsc=' + ing_click_cookie : '') + 
+let cookies = (ing_click_cookie != '' ? 'tsc=' + ing_click_cookie : '') +
               (ing_view_cookie != '' ?  '; tsv=' + ing_view_cookie : '');
 
 logToConsole('Tracking Url to call: ' + url);
 
 sendHttpGet(url, (statusCode, headers, body) => {
-  logToConsole(body);
   setPixelResponse(body);
+  logToConsole(headers);
   setCookies(headers);
+
   logToConsole(statusCode);
   setResponseStatus(statusCode);
+
   if(statusCode>=200 && statusCode < 300) {
     data.gtmOnSuccess();
   } else {
@@ -597,6 +598,6 @@ scenarios: []
 
 ___NOTES___
 
-Created on 15.2.2022, 18:59:17
+Created on 11.5.2022, 08:56:59
 
 

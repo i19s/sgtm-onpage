@@ -8,3 +8,5 @@ versions:
     changeNotes: "Wrong variables used"
   - sha: 389ed65b56881d144ba2d55c80ffcd78bbbe0637
     changeNotes: "Complete rewrite"
+  - sha: df6db3b0450feb7c15aaa8e70fc55d3afde209cc
+    changeNotes: "Add header forwarding and basket processing"

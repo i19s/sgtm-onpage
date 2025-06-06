@@ -12,5 +12,5 @@ versions:
     changeNotes: "Add header forwarding and basket processing"
   - sha: c96d338e3427472cdf6557ed18c7a1d2b23c467b
     changeNotes: "Fix the generation of the tracking URL"
-
-  
+  - sha: 065fac90965c57ac4fb34c280e89942496915589
+    changeNotes: "Adds new parameters and improves code structure"

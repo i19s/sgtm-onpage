@@ -437,17 +437,17 @@ ___SANDBOXED_JS_FOR_SERVER___
             queryString += "&".concat(QueryParameter.USER_AGENT, "=").concat(user_agent);
             logToConsole(QueryParameter.USER_AGENT + ' = ' + user_agent);
         }
-        if (basket && basket !== '%5B%5D') {
-            queryString += "&".concat(QueryParameter.BASKET, "=").concat(basket);
-            logToConsole(QueryParameter.BASKET + ' = ' + basket);
+        if (conversion_target) {
+            queryString += "&".concat(QueryParameter.CONVERSION_TARGET, "=").concat(conversion_target);
+            logToConsole(QueryParameter.CONVERSION_TARGET + ' = ' + conversion_target);
+        }
+        if (tracking_category) {
+            queryString += "&".concat(QueryParameter.TRACKING_CATEGORY, "=").concat(tracking_category);
+            logToConsole(QueryParameter.TRACKING_CATEGORY + ' = ' + tracking_category);
         }
         if (conversion_id) {
             queryString += "&".concat(QueryParameter.CONVERSION_ID, "=").concat(conversion_id);
             logToConsole(QueryParameter.CONVERSION_ID + ' = ' + conversion_id);
-        }
-        if (conversion_target) {
-            queryString += "&".concat(QueryParameter.CONVERSION_TARGET, "=").concat(conversion_target);
-            logToConsole(QueryParameter.CONVERSION_TARGET + ' = ' + conversion_target);
         }
         if (customer_new) {
             queryString += "&".concat(QueryParameter.CUSTOMER_NEW, "=").concat(customer_new);
@@ -477,10 +477,6 @@ ___SANDBOXED_JS_FOR_SERVER___
             queryString += "&".concat(QueryParameter.UNIQUE_ID, "=").concat(unique_id);
             logToConsole(QueryParameter.UNIQUE_ID + ' = ' + unique_id);
         }
-        if (tracking_category) {
-            queryString += "&".concat(QueryParameter.TRACKING_CATEGORY, "=").concat(tracking_category);
-            logToConsole(QueryParameter.TRACKING_CATEGORY + ' = ' + tracking_category);
-        }
         if (ip_address) {
             queryString += "&".concat(QueryParameter.IP_ADDRESS, "=").concat(ip_address);
             logToConsole(QueryParameter.IP_ADDRESS + ' = ' + ip_address);
@@ -488,6 +484,10 @@ ___SANDBOXED_JS_FOR_SERVER___
         if (admedia_code) {
             queryString += "&".concat(QueryParameter.ADMEDIA_CODE, "=").concat(admedia_code);
             logToConsole(QueryParameter.ADMEDIA_CODE + ' = ' + admedia_code);
+        }
+        if (basket && basket !== '%5B%5D') {
+            queryString += "&".concat(QueryParameter.BASKET, "=").concat(basket);
+            logToConsole(QueryParameter.BASKET + ' = ' + basket);
         }
         var url = "".concat(baseUrl).concat(queryString);
         logToConsole('Built tracking url: ' + url);
@@ -552,7 +552,7 @@ ___SANDBOXED_JS_FOR_SERVER___
     var getTimestampMillis = require('getTimestampMillis');
 
     var DEFAULT_TRACKING_HOST = 'proxy.ingenious.cloud';
-    var TAG_VERSION = '831fff1608a6046f36ee7ee1549b608b5463ddb6';
+    var TAG_VERSION = '6b600c482cd4a16ab43fbaacb118bec52447a1f3';
 
     function setResponseCookies(setCookieHeader, json, setCookie) {
         for (var i = 0; i < setCookieHeader.length; i++) {

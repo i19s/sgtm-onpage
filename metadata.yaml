@@ -14,3 +14,5 @@ versions:
     changeNotes: "Fix the generation of the tracking URL"
   - sha: 065fac90965c57ac4fb34c280e89942496915589
     changeNotes: "Adds new parameters and improves code structure"
+  - sha: 592f07f8e51a9fccc2ba72ee1a2725f8b21fcade
+    changeNotes: "Reorders and updates query parameters"

@@ -552,25 +552,58 @@ ___SANDBOXED_JS_FOR_SERVER___
     var getTimestampMillis = require('getTimestampMillis');
 
     var DEFAULT_TRACKING_HOST = 'proxy.ingenious.cloud';
-    var TAG_VERSION = '6b600c482cd4a16ab43fbaacb118bec52447a1f3';
+    var TAG_VERSION = 'a2ac99f94b79ccb840a3bcd76f46addafb07d127';
 
-    function setResponseCookies(setCookieHeader, json, setCookie) {
-        for (var i = 0; i < setCookieHeader.length; i++) {
-            var setCookieArray = setCookieHeader[i].split('; ').map(function (pair) { return pair.split('='); });
-            var setCookieJson = '';
-            for (var j = 1; j < setCookieArray.length; j++) {
-                if (j === 1)
-                    setCookieJson += '{';
-                if (setCookieArray[j].length > 1)
-                    setCookieJson += '"' + setCookieArray[j][0] + '": "' + setCookieArray[j][1] + '"';
-                else
-                    setCookieJson += '"' + setCookieArray[j][0] + '": ' + true;
-                if (j + 1 < setCookieArray.length)
-                    setCookieJson += ',';
-                else
-                    setCookieJson += '}';
+    function setResponseCookies(setCookieHeaders, setCookie, logToConsole) {
+        var headersArray = typeof setCookieHeaders === 'string' ? [setCookieHeaders] : setCookieHeaders;
+        for (var i = 0; i < headersArray.length; i++) {
+            var cookieHeader = headersArray[i];
+            if (!cookieHeader)
+                continue;
+            var parts = cookieHeader.split(';').map(function (part) { return part.trim(); });
+            if (parts.length === 0)
+                continue;
+            var firstPart = parts[0];
+            if (!firstPart)
+                continue;
+            var nameValuePair = firstPart.split('=');
+            if (nameValuePair.length < 2 || !nameValuePair[0] || !nameValuePair[1]) {
+                logToConsole('Invalid Set-Cookie header format: ' + cookieHeader);
+                continue;
             }
-            setCookie(setCookieArray[0][0], setCookieArray[0][1], json.parse(setCookieJson));
+            var cookieName = nameValuePair[0].trim();
+            var cookieValue = nameValuePair.slice(1).join('=').trim();
+            var options = {};
+            for (var j = 1; j < parts.length; j++) {
+                var part = parts[j];
+                if (!part)
+                    continue;
+                var optionPair = part.split('=');
+                var optionName = optionPair[0] ? optionPair[0].trim().toLowerCase() : '';
+                var optionValue = optionPair.length > 1 && optionPair[1] ? optionPair[1].trim() : 'true';
+                if (optionName === 'domain') {
+                    options.domain = optionValue;
+                }
+                else if (optionName === 'path') {
+                    options.path = optionValue;
+                }
+                else if (optionName === 'max-age') {
+                    options['max-age'] = optionValue * 1 || 0;
+                }
+                else if (optionName === 'expires') {
+                    options.expires = optionValue;
+                }
+                else if (optionName === 'secure') {
+                    options.secure = true;
+                }
+                else if (optionName === 'httponly') {
+                    options.httpOnly = true;
+                }
+                else if (optionName === 'samesite') {
+                    options.sameSite = optionValue.toLowerCase();
+                }
+            }
+            setCookie(cookieName, cookieValue, options);
         }
     }
     function sendHttpGetRequest(sendHttpGet, setCookie, setResponseBody, setResponseHeader, logToConsole, json, setResponseStatus, url) {
@@ -579,10 +612,19 @@ ___SANDBOXED_JS_FOR_SERVER___
             if (result.statusCode >= 200 && result.statusCode < 400) {
                 for (var key in result.headers) {
                     if (key === 'set-cookie') {
-                        setResponseCookies(result.headers[key], json, setCookie);
+                        var setCookieValue = result.headers[key];
+                        if (setCookieValue) {
+                            setResponseCookies(setCookieValue, setCookie, logToConsole);
+                        }
                     }
                     else {
-                        setResponseHeader(key, result.headers[key]);
+                        var headerValue = result.headers[key];
+                        if (typeof headerValue === 'string') {
+                            setResponseHeader(key, headerValue);
+                        }
+                        else if (headerValue && typeof headerValue === 'object' && typeof headerValue.join === 'function') {
+                            setResponseHeader(key, headerValue.join(', '));
+                        }
                     }
                 }
                 if (result.body) {
@@ -611,7 +653,7 @@ ___SANDBOXED_JS_FOR_SERVER___
     var setCookie = require('setCookie');
 
     var urlData = {
-        admedia_code: "",
+        admedia_code: initVariableFromTagOrEvent(logToConsole, getEventData, 'admedia_code') || '',
         ip_address: initVariableFromTagOrEvent(logToConsole, getEventData, 'ip_address') || getRemoteAddress(),
         tracking_category: "",
         conversion_response_type: '',

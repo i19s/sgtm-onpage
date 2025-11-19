@@ -16,3 +16,5 @@ versions:
     changeNotes: "Adds new parameters and improves code structure"
   - sha: 592f07f8e51a9fccc2ba72ee1a2725f8b21fcade
     changeNotes: "Reorders and updates query parameters"
+  - sha: 83298dc8411f267a1bf47bb2093355a32e45fea5
+    changeNotes: "Improves Set-Cookie header parsing"

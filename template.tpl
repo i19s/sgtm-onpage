@@ -552,7 +552,7 @@ ___SANDBOXED_JS_FOR_SERVER___
     var getTimestampMillis = require('getTimestampMillis');
 
     var DEFAULT_TRACKING_HOST = 'proxy.ingenious.cloud';
-    var TAG_VERSION = 'a2ac99f94b79ccb840a3bcd76f46addafb07d127';
+    var TAG_VERSION = '79fe15d3f3912e5f3a22c1165d54d1f6bb1b9204';
 
     function setResponseCookies(setCookieHeaders, setCookie, logToConsole) {
         var headersArray = typeof setCookieHeaders === 'string' ? [setCookieHeaders] : setCookieHeaders;
@@ -671,7 +671,7 @@ ___SANDBOXED_JS_FOR_SERVER___
         http_location: initVariableFromTagOrEvent(logToConsole, getEventData, 'http_location') || '',
         http_referrer: initVariableFromTagOrEvent(logToConsole, getEventData, 'http_referrer') || '',
         i19s_click_cookie: initVariableFromTagOrEvent(logToConsole, getEventData, 'i19s_click_cookie') || makeString(getCookieValues(CookieName.CLICK_COOKIE)) || '',
-        i19s_click_ids: initVariableFromTagOrEvent(logToConsole, getEventData, 'i19s_click_ids') || makeString(getCookieValues(CookieName.ICLID_COOKIE)),
+        i19s_click_ids: initVariableFromTagOrEvent(logToConsole, getEventData, 'click_ids') || makeString(getCookieValues(CookieName.ICLID_COOKIE)),
         i19s_view_cookie: initVariableFromTagOrEvent(logToConsole, getEventData, 'i19s_view_cookie') || makeString(getCookieValues(CookieName.VIEW_COOKIE)),
         pay_method: "",
         product_id: initVariableFromTagOrEvent(logToConsole, getEventData, 'product_id') || '',
